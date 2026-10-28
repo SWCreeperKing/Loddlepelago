@@ -27,7 +27,7 @@ public static class Orders
     {
         if (___currentlySelectedEntry is null) return false;
         var loc = $"Purchase {LoddleClient.ItemIdToName[___currentlySelectedEntry.entryOrderInfo.orderID]}";
-        if (!LoddleClient.Client.IsMissingLocation(loc))
+        if (LoddleClient.Client.IsMissingLocation(loc))
         {
             if (__instance.CallPrivateMethod<bool>(
                     "SubtractMaterialCredits", ___currentlySelectedEntry.entryOrderInfo.orderCost

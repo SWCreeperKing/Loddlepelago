@@ -3,6 +3,7 @@ using Loddlepelago.CopyPastas;
 using MelonLoader;
 using UnityEngine;
 using static Loddlepelago.Archipelago.LoddleClient;
+using Object = UnityEngine.Object;
 
 [assembly:
     MelonInfo(typeof(Loddlepelago.Core), "Loddlepelago", Loddlepelago.Core.VersionNumber, "SW_CreeperKing", null)]
@@ -67,7 +68,7 @@ public class Core : MelonMod
         if (Scene is "Build_MainMenu") ApGui.Render();
         if (ShowDebugWindow) DebugWindow.Render();
     }
-
+    
     public override void OnSceneWasLoaded(int buildIndex, string sceneName)
     {
         PlayButton = null;
@@ -93,6 +94,9 @@ public class Core : MelonMod
                     db.CallPrivateMethod("UnlockRecipe", shippingOrder.orderID, false, true);
                 foreach (var shippingOrder in db.GetPrivateField<List<ShippingOrder>>("structureOrderDB"))
                     db.CallPrivateMethod("UnlockRecipe", shippingOrder.orderID, false, false);
+
+                foreach (var bot in Object.FindObjectsOfType<RecycleBot>())
+                    bot.SetPrivateField("itemsToFillMeter", Data.RecycleCost);
                 break;
         }
         // Log.Msg($"Scene Loaded: [{sceneName}]");

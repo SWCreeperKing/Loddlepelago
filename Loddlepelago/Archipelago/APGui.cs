@@ -15,12 +15,17 @@ public class APGui : GuiBuilder
         SetterGetter<string> addPortSetterGetter = new(() => Data.AddressPort, s => Data.AddressPort = s);
         SetterGetter<string> passwordSetterGetter = new(() => Data.Password, s => Data.Password = s);
         SetterGetter<string> slotNameSetterGetter = new(() => Data.SlotName, s => Data.SlotName = s);
+        SetterGetter<string> recycleBotCostSetterGetter = new(
+            () => $"{Data.RecycleCost}",
+            s => Data.RecycleCost = Math.Clamp(int.TryParse(s, out var num) ? num : Data.RecycleCost, 1, 100)
+        );
 
         NotConnectedBox = new Window(0, 100, 100, 200, "AP Client")
            .AddChildren(
                 new Label("Address:port", 30), new TextField(addPortSetterGetter, 25),
                 new Label("Password", 30), new TextField(passwordSetterGetter, 25),
                 new Label("Slot Name", 30), new TextField(slotNameSetterGetter, 25),
+                new Label("Recycle Bot Ingot Cost (1-100)", 30), new TextField(recycleBotCostSetterGetter, 25),
                 new Spacer(30), new UiButton("Connect", 30, TryConnectClient),
                 new Label(
                     new TextRef(() => State is not "" ? State : "Not Connected"), 20, Color.red,

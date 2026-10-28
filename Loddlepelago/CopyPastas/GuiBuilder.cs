@@ -158,6 +158,18 @@ public class TextField(SetterGetter<string> text, float height) : IGuiElement
     }
 }
 
+public class IntField(SetterGetter<string> text, float height) : IGuiElement
+{
+    private GUIStyle Style = new(GUI.skin.textField) { alignment = TextAnchor.MiddleLeft };
+    public Rect Rect = new(0, 0, height, 0);
+
+    public void Render(ref float x, ref float y, float w)
+    {
+        text.Data = GUI.TextField(Rect with { x = x, y = y, width = w, height = height }, text, Style);
+        y += height;
+    }
+}
+
 public class Toggle(SetterGetter<bool> toggle, TextRef text, float height)
     : IGuiElement
 {
