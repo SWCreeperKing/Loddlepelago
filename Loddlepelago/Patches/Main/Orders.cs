@@ -1,6 +1,4 @@
-﻿using Archipelago.MultiClient.Net.Enums;
-using DG.Tweening;
-using HarmonyLib;
+﻿using HarmonyLib;
 using iGameAudio.FMODWrapper;
 using Loddlepelago.Archipelago;
 using Loddlepelago.CopyPastas;

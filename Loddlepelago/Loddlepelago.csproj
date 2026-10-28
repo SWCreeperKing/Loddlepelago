@@ -516,6 +516,7 @@
 		<Compile Include="Patches\Main\Orders.cs" />
 		<Compile Include="Patches\QoL\InfBoost.cs" />
 		<Compile Include="Patches\QoL\InfOxygen.cs" />
+		<Compile Include="Patches\QoL\TrashLoot.cs" />
 		<Compile Include="Patches\Regions\BiomePercent.cs" />
 		<Compile Include="Patches\Regions\RegionRestrictionPatch.cs" />
 		<Compile Include="Patches\SavePatch.cs" />
