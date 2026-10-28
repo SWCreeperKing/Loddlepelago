@@ -35,6 +35,7 @@ public class APGui : GuiBuilder
 
         ConnectedBox = new Window(1, 100, 100, 200, "AP Client")
            .AddChildren(
+                new Label("Recycle Bot Ingot Cost (1-100)", 30), new TextField(recycleBotCostSetterGetter, 25),
                 new Spacer(30), new UiButton("Disconnect", 30, () => Client.TryDisconnect()),
                 new Label("Connected", 20, Color.green, alignment: TextAnchor.UpperLeft)
             );
