@@ -34,12 +34,12 @@ public static class GameobjExtensions
     public static GameObject GetParent<TMonoBehavior>(this TMonoBehavior behavior) where TMonoBehavior : MonoBehaviour
         => behavior.transform.parent.gameObject;
 
-    public static TOut GetPrivateField<TOut>(this object obj, string field)
+    public static TOut GetPrivateField<TOut>(this object obj, string field, bool printErr = true)
     {
         var fieldInfo = obj.GetType().GetField(field, BindingFlags.NonPublic | BindingFlags.Instance);
         if (fieldInfo is null) throw new ArgumentException($"Field [{field}] is null");
         var value = fieldInfo.GetValue(obj);
-        if (value is null) throw new ArgumentException($"Value for [{field}] is null");
+        if (value is null && printErr) throw new ArgumentException($"Value for [{field}] is null");
         return (TOut)value;
         
     }

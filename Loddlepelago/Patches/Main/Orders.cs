@@ -20,7 +20,7 @@ public static class Orders
         );
         return false;
     }
-    
+
     [HarmonyPatch(typeof(ShippingMenu), "PlaceOrder"), HarmonyPrefix]
     public static bool PlaceOrder(ShippingMenu __instance, ShippingMenuEntry ___currentlySelectedEntry,
         ShippingMenuAudioConfig ___audioConfig)
@@ -50,7 +50,7 @@ public static class Orders
 
         return false;
     }
-    
+
     [HarmonyPatch(typeof(ShippingMenu), "Update"), HarmonyPostfix]
     public static void SpawnItem(ShippingMenu __instance, ShippingMenuAudioConfig ___audioConfig,
         RectTransform ___packageParentTransform, Vector3 ___packagePunchScale, float ___packagePunchTime,
@@ -58,15 +58,15 @@ public static class Orders
     {
         if (__instance.packageIsOnPad)
         {
-            var packagePunchTween = __instance.GetPrivateField<Tweener>("packagePunchTween");
-            packagePunchTween?.Complete();
-            __instance.SetPrivateField(
-                "packagePunchTween",
-                ___packageParentTransform.DOPunchScale(
-                    ___packagePunchScale, ___packagePunchTime, ___packagePunchVibrato, ___packagePunchElasticity
-                )
-            );
-            AudioSystem.PlaySound(___audioConfig.OrderRejectPadFullSound);
+            // var packagePunchTween = __instance.GetPrivateField<Tweener>("packagePunchTween", false);
+            // packagePunchTween?.Complete();
+            // __instance.SetPrivateField(
+            //     "packagePunchTween",
+            //     ___packageParentTransform.DOPunchScale(
+            //         ___packagePunchScale, ___packagePunchTime, ___packagePunchVibrato, ___packagePunchElasticity
+            //     )
+            // );
+            // AudioSystem.PlaySound(___audioConfig.OrderRejectPadFullSound);
             return;
         }
 
@@ -74,19 +74,53 @@ public static class Orders
         {
             if (ItemHandler.ItemsToReceive.IsEmpty) return;
             ItemHandler.ItemsToReceive.TryDequeue(out var item);
-            ItemHandler.LocalItemsReceived++;
-
-            if (ItemHandler.LocalItemsReceived <= ItemHandler.TotalItemsReceived) return;
-            ItemHandler.TotalItemsReceived = ItemHandler.LocalItemsReceived;
-            LoddleClient.Client.SendToStorage("item_on", ItemHandler.TotalItemsReceived, Scope.Slot);
 
             var itemObj = EngineHub.RecipeDatabase.LookUpOrderByID(item);
             itemObj.ordersMade++;
             EngineHub.EventManager.Fire(new PurchasedAPackage(itemObj));
         }
+        catch (Exception e) { Core.Log.Error(e); }
+    }
+
+    [HarmonyPatch(typeof(ModelPreviewer), "StartDisplayingPreview", typeof(ShippingOrder), typeof(bool)), HarmonyPrefix]
+    public static bool StartDisplayingPreview(ModelPreviewer __instance, ShippingOrder orderInfo,
+        bool tweenInPreview = false)
+    {
+        try
+        {
+            orderInfo.previewMeshFilter ??= orderInfo.previewMeshObject.GetComponent<MeshFilter>();
+            orderInfo.previewMeshRenderer ??= orderInfo.previewMeshObject.GetComponent<MeshRenderer>();
+
+            __instance.StartDisplayingPreview(
+                orderInfo.previewMeshObject.transform, orderInfo.previewMeshFilter.sharedMesh,
+                orderInfo.previewMeshRenderer.sharedMaterials, tweenInPreview
+            );
+        }
         catch (Exception e)
         {
-            Core.Log.Error(e);
+            // Core.Log.Error(e); 
         }
+        return false;
+    }
+
+    [HarmonyPatch(typeof(ModelPreviewer), "StartDisplayingPreview", typeof(RecipeOutput), typeof(bool)), HarmonyPrefix]
+    public static bool StartDisplayingPreview(ModelPreviewer __instance, RecipeOutput itemDetails,
+        bool tweenInPreview = false)
+    {
+        try
+        {
+            itemDetails.previewMeshFilter ??= itemDetails.previewMeshObject.GetComponent<MeshFilter>();
+            itemDetails.previewMeshRenderer ??= itemDetails.previewMeshObject.GetComponent<MeshRenderer>();
+            
+            __instance.StartDisplayingPreview(
+                itemDetails.previewMeshObject.transform, itemDetails.previewMeshFilter.sharedMesh,
+                itemDetails.previewMeshRenderer.sharedMaterials, tweenInPreview
+            );
+        }
+        catch (Exception e)
+        {
+            // Core.Log.Error(e);
+        }
+        return false;
     }
 }

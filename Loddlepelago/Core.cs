@@ -97,6 +97,9 @@ public class Core : MelonMod
 
                 foreach (var bot in Object.FindObjectsOfType<RecycleBot>())
                     bot.SetPrivateField("itemsToFillMeter", Data.RecycleCost);
+
+                EngineHub.ShippingMenu.CallPrivateMethod("InitializeEntries", 0, true);
+                EngineHub.ShippingMenu.CallPrivateMethod("InitializeEntries", 0, false);
                 break;
         }
         // Log.Msg($"Scene Loaded: [{sceneName}]");
