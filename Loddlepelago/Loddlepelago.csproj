@@ -513,6 +513,7 @@
 		<Compile Include="Patches\Main\Evolve.cs" />
 		<Compile Include="Patches\Main\HoloBadge.cs" />
 		<Compile Include="Patches\Main\IntroWipe.cs" />
+		<Compile Include="Patches\Main\NoLeave.cs" />
 		<Compile Include="Patches\Main\Orders.cs" />
 		<Compile Include="Patches\QoL\InfBoost.cs" />
 		<Compile Include="Patches\QoL\InfOxygen.cs" />

@@ -16,6 +16,7 @@ Help support me, this and future projects on [Patreon](https://www.patreon.com/c
   - Cooking (yaml)
   - Loddle Evolutions (yaml)
 - Going to a locked region will teleport you back to the `Home Cave`
+- The prompt to start the ending sequence doesn't appear until after you goal
 
 ---
 
