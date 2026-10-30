@@ -22,6 +22,7 @@ public static class BiomePercent
         var remainingPercent = CleanPercents.SkipWhile(i => prevClean > i);
         var toCleanPercent = remainingPercent.TakeWhile(i => clean >= i);
 
+        if (prevClean is 999) return;
         foreach (var i in toCleanPercent)
         {
             LoddleClient.SendLocation($"Clean {__instance.biomeDisplayName} {i}%");
@@ -37,6 +38,8 @@ public static class BiomePercent
             Core.Log.Msg(
                 $"Mark [{__instance.biomeDisplayName}] as complete| final: [{LoddleClient.BiomeCompletionFlag.GetTrackingFlag}]"
             );
+            LastRecordedPollution[name] = 999;
+            return;
         }
 
         LastRecordedPollution[name] = clean;

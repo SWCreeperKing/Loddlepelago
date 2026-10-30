@@ -28,12 +28,12 @@ public static class TrashLoot
     }
     
     [HarmonyPatch(typeof(Chunk), "SpawnItems"), HarmonyPrefix]
-    public static bool SpawnLoot(Chunk __instance)
+    public static void SpawnLoot(Chunk __instance)
     {
         var data = __instance.chunkData;
-        if (data.spawnPool is null) return false;
-        if (data.chunkType is not ChunkData.ChunkType.TRASH) return true;
-        if (data.spawnPool.itemsToSpawn.Count == 0) return true;
+        if (data.spawnPool is null) return;
+        if (data.chunkType is not ChunkData.ChunkType.TRASH) return;
+        if (data.spawnPool.itemsToSpawn.Count == 0) return;
         
         foreach (var original in TechObjects.Values)
         {
@@ -54,6 +54,6 @@ public static class TrashLoot
             component2.AddTorque(UnityEngine.Random.onUnitSphere * num);
         }
         
-        return false;
+        return;
     }
 }

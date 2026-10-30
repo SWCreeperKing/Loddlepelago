@@ -1,6 +1,7 @@
 ﻿using Loddlepelago.Archipelago;
 using Loddlepelago.CopyPastas;
 using Loddlepelago.Patches.QoL;
+using Loddlepelago.Patches.Regions;
 using MelonLoader;
 using UnityEngine;
 using static Loddlepelago.Archipelago.LoddleClient;
@@ -77,6 +78,8 @@ public class Core : MelonMod
         switch (sceneName)
         {
             case "Build_MainMenu":
+                BiomePercent.LastRecordedPollution.Clear();
+                if (Client is not null && Client.IsConnected) Client.TryDisconnect();
                 TrashLoot.TechObjects.Clear();
                 PlayButton = GameObject.Find(
                     "Main Menu Canvas/OuterGameMenu_MainMenu/TopLevelButtonsParent/Play Button"

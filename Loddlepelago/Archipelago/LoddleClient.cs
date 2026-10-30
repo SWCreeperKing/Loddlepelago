@@ -50,7 +50,7 @@ public static class LoddleClient
                 ];
                 ItemHandler.LocalItemsReceived = 0;
                 ItemHandler.ItemsToReceive.Clear();
-                ItemHandler.TotalItemsReceived = Client.GetFromStorage("item_on", Scope.Slot, def: 0L);
+                ItemHandler.PrinterItemsReceived = Client.GetFromStorage("printer_items", Scope.Slot, def: 0L);
                 Client.GetFromStorageAsync(
                     "biome_completion", s => BiomeCompletionFlag.SetFlag(s), Scope.Slot, BiomeCompletionFlag.MinFlag
                 );
@@ -78,7 +78,7 @@ public static class LoddleClient
             handler.OnItemReceived += (item, _) => ItemHandler.HandleItem(item);
         };
 
-        Client.OnConnectionErrorReceived += (e, s) => Core.Log.Error(e);
+        Client.OnConnectionErrorReceived += (e, _) => Core.Log.Error(e);
     }
 
     [CanBeNull]
@@ -107,7 +107,6 @@ public static class LoddleClient
             if (Core.Scene is not "Build_Latest") return;
 
             Client.UpdateItemHandler();
-            // ItemHandler.RunPrinter();
         }
         catch (Exception e) { Core.Log.Error(e); }
     }
@@ -127,9 +126,9 @@ public static class LoddleClient
             "South of Home Cave", "West of Home Cave",
         ];
         ItemHandler.LocalItemsReceived = 0;
-        ItemHandler.TotalItemsReceived = 0;
+        ItemHandler.PrinterItemsReceived = 0;
         ItemHandler.ItemsToReceive.Clear();
-        Client.SendToStorage("item_on", 0, Scope.Slot);
+        Client.SendToStorage("printer_items", 0, Scope.Slot);
         Client.SendToStorage("biome_completion", BiomeCompletionFlag.MinFlag, Scope.Slot);
     }
 }

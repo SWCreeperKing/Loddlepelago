@@ -1,8 +1,10 @@
-﻿using HarmonyLib;
+﻿using Archipelago.MultiClient.Net.Enums;
+using HarmonyLib;
 using iGameAudio.FMODWrapper;
 using Loddlepelago.Archipelago;
 using Loddlepelago.CopyPastas;
 using UnityEngine;
+using static Loddlepelago.Archipelago.ItemHandler;
 
 namespace Loddlepelago.Patches.Main;
 
@@ -54,28 +56,19 @@ public static class Orders
         RectTransform ___packageParentTransform, Vector3 ___packagePunchScale, float ___packagePunchTime,
         int ___packagePunchVibrato, float ___packagePunchElasticity)
     {
-        if (__instance.packageIsOnPad)
-        {
-            // var packagePunchTween = __instance.GetPrivateField<Tweener>("packagePunchTween", false);
-            // packagePunchTween?.Complete();
-            // __instance.SetPrivateField(
-            //     "packagePunchTween",
-            //     ___packageParentTransform.DOPunchScale(
-            //         ___packagePunchScale, ___packagePunchTime, ___packagePunchVibrato, ___packagePunchElasticity
-            //     )
-            // );
-            // AudioSystem.PlaySound(___audioConfig.OrderRejectPadFullSound);
-            return;
-        }
+        if (__instance.packageIsOnPad) return;
 
         try
         {
-            if (ItemHandler.ItemsToReceive.IsEmpty) return;
-            ItemHandler.ItemsToReceive.TryDequeue(out var item);
+            if (ItemsToReceive.IsEmpty) return;
+            ItemsToReceive.TryDequeue(out var item);
 
             var itemObj = EngineHub.RecipeDatabase.LookUpOrderByID(item);
             itemObj.ordersMade++;
             EngineHub.EventManager.Fire(new PurchasedAPackage(itemObj));
+            
+            PrinterItemsReceived++;
+            LoddleClient.Client.SendToStorage("printer_items", PrinterItemsReceived, Scope.Slot);
         }
         catch (Exception e) { Core.Log.Error(e); }
     }
