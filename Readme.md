@@ -36,6 +36,12 @@ Help support me, this and future projects on [Patreon](https://www.patreon.com/c
 
 ---
 
+# Special Thanks
+
+- Devy: Logic helper and guinea-pig
+
+---
+
 # Tools:
 
 - Melon Loader (obv)
