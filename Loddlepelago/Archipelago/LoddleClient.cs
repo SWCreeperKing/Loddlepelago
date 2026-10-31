@@ -49,6 +49,7 @@ public static class LoddleClient
                     "South of Home Cave", "West of Home Cave",
                 ];
                 ItemHandler.LocalItemsReceived = 0;
+                ItemHandler.LocalPrintedReceived = 0;
                 ItemHandler.ItemsToReceive.Clear();
                 ItemHandler.PrinterItemsReceived = Client.GetFromStorage("printer_items", Scope.Slot, def: 0L);
                 Client.GetFromStorageAsync(
@@ -119,6 +120,7 @@ public static class LoddleClient
 
     public static void InitNewGame()
     {
+        Core.Log.Msg("New Game");
         BiomeCompletionFlag.SetFlag();
         ItemHandler.RegionsUnlocked =
         [

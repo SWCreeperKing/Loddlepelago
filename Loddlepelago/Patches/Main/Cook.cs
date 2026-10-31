@@ -24,14 +24,16 @@ public static class Cook
             ___currentlySelectedEntry.recipe.isFoodRecipe ? ObjectiveNames.TestCookingModule
                 : ObjectiveNames.TestCraftingStation, 1f
         );
+        
         __instance.CallPrivateMethod("RemoveRecipeIngredients");
         __instance.SetPrivateField("itemIsBeingCrafted", true);
         EngineHub.EventManager.Fire(
             new CraftedAnItem(___currentlySelectedEntry.recipe, __instance.numberOfItemsToCraft)
         );
+        
         EngineHub.PlayerInteractionHandler.ExitCurrentStructureMenu();
         AudioSystem.PlaySound(___audioConfig.CraftSound);
-        LoddleClient.SendLocation($"Cook: {LoddleClient.ItemIdToName[___currentlySelectedEntry.recipe.recipeID]}");
+        LoddleClient.SendLocation($"Cook: {LoddleClient.CookingIdToName[___currentlySelectedEntry.recipe.recipeID]}");
         return false;
     }
 }

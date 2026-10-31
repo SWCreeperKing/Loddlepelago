@@ -21,7 +21,7 @@ public static class TrashLoot
         [
             .. data.spawnPool.itemsToSpawn
                    .SelectMany(i => i.itemTypeObjectPool)
-                   .Where(g =>g is not null && g.name.StartsWith("Tech_")),
+                   .Where(g =>g is not null && (g.name.StartsWith("Tech_") || g.name.StartsWith("Plastic_"))),
         ];
 
         foreach (var obj in objects) TechObjects[obj.name] = obj;
